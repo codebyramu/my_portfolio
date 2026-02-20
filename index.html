@@ -1,312 +1,460 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ramu | AI & Software Engineer</title>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        :root {
-            --bg: #010409;
-            --cyan: #00f2ff;
-            --pink: #ff007f;
-            --border: rgba(255, 255, 255, 0.1);
-            --glass: rgba(13, 17, 23, 0.95);
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ramadass A | Interactive Portfolio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #060b16;
+      --bg-2: #101d3d;
+      --card: rgba(17, 26, 45, 0.82);
+      --text: #f4f7ff;
+      --muted: #bac6e5;
+      --accent: #57b5ff;
+      --accent-2: #8f72ff;
+      --border: rgba(255, 255, 255, 0.16);
+      --glow: rgba(87, 181, 255, 0.35);
+    }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; scroll-behavior: smooth; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
 
-        body {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            background-color: var(--bg);
-            color: white;
-            overflow-x: hidden;
-        }
+    html { scroll-behavior: smooth; }
 
-        #bgCanvas { position: fixed; top: 0; left: 0; z-index: -1; background: #010409; }
+    body {
+      font-family: "Poppins", sans-serif;
+      color: var(--text);
+      line-height: 1.65;
+      min-height: 100vh;
+      background: radial-gradient(circle at top right, var(--bg-2) 0%, var(--bg) 50%);
+      overflow-x: hidden;
+    }
 
-        /* --- STICKY NAV --- */
-        nav {
-            position: fixed; top: 15px; left: 50%; transform: translateX(-50%);
-            width: 90%; max-width: 1000px;
-            background: var(--glass); backdrop-filter: blur(20px);
-            border: 1px solid var(--border); border-radius: 50px;
-            padding: 12px 25px; display: flex; justify-content: space-between; align-items: center; z-index: 1000;
-        }
+    #particle-canvas {
+      position: fixed;
+      inset: 0;
+      z-index: -2;
+    }
 
-        .logo { font-weight: 800; font-size: 1.4rem; color: #fff; text-decoration: none; transition: 0.3s; }
-        .logo:hover { color: var(--cyan); }
+    .overlay {
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      background: linear-gradient(120deg, rgba(6,11,22,0.5), rgba(6,11,22,0.75));
+      pointer-events: none;
+    }
 
-        .nav-links { display: flex; gap: 15px; list-style: none; }
-        .nav-links a { text-decoration: none; color: #fff; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
-        .nav-links a:hover { color: var(--cyan); }
+    .container { width: min(1100px, 92%); margin: 0 auto; }
 
-        /* --- SECTION STYLING --- */
-        section { padding: 120px 10% 60px 10%; min-height: 100vh; display: flex; flex-direction: column; justify-content: center; }
-        h2 { font-size: 2.5rem; margin-bottom: 30px; border-left: 5px solid var(--cyan); padding-left: 15px; }
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      backdrop-filter: blur(10px);
+      background: rgba(8, 14, 28, 0.62);
+      border-bottom: 1px solid var(--border);
+    }
 
-        /* --- HERO --- */
-        .hero { text-align: center; }
-        #hero-image {
-            width: 150px; 
-            height: 150px; 
-            border-radius: 50%; 
-            object-fit: cover; 
-            margin-bottom: 20px;
-            border: 4px solid var(--cyan); /* CIRCLE BORDER */
-            box-shadow: 0 0 20px rgba(0, 242, 255, 0.6);
-        }
+    .nav-wrap {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 0;
+    }
 
-        .hero-name {
-            font-size: clamp(4rem, 15vw, 8rem);
-            font-weight: 800;
-            background: linear-gradient(180deg, #FFFFFF 30%, var(--cyan) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            filter: drop-shadow(0 0 15px rgba(0, 242, 255, 0.3));
-            margin: 10px 0;
-            letter-spacing: -2px;
-        }
-        .roles { color: #64748b; font-size: 1.1rem; font-weight: 500; }
+    .logo {
+      font-weight: 700;
+      letter-spacing: 0.4px;
+      text-decoration: none;
+      color: var(--text);
+    }
 
-        /* --- CARDS --- */
-        .glass-card {
-            background: rgba(255,255,255,0.02);
-            padding: 35px;
-            border-radius: 20px;
-            border: 1px solid var(--border);
-            line-height: 1.8;
-            color: #cbd5e1;
-            max-width: 900px;
-            margin-bottom: 20px;
-        }
+    .nav-links {
+      display: flex;
+      gap: 18px;
+      list-style: none;
+      font-size: 0.95rem;
+    }
 
-        .edu-box {
-            border-left: 4px solid var(--cyan);
-            padding-left: 25px;
-            margin-top: 20px;
-        }
+    .nav-links a { text-decoration: none; color: var(--muted); transition: color .2s ease; }
+    .nav-links a:hover { color: var(--accent); }
 
-        /* --- SKILLS --- */
-        .skills-container { display: flex; flex-direction: column; gap: 15px; max-width: 800px; }
-        .skill-card { background: rgba(255,255,255,0.02); border: 1px solid var(--border); border-radius: 16px; overflow: hidden; cursor: pointer; transition: 0.3s; }
-        .skill-card:hover { border-color: var(--cyan); background: rgba(0, 242, 255, 0.03); }
-        .skill-header { padding: 25px; display: flex; justify-content: space-between; align-items: center; }
-        .skill-content { max-height: 0; overflow: hidden; transition: 0.5s ease-out; background: rgba(0, 0, 0, 0.3); padding: 0 25px; }
-        .skill-card.active .skill-content { max-height: 1000px; padding: 25px; border-top: 1px solid var(--border); }
-        
-        .tag-list { display: flex; flex-wrap: wrap; gap: 10px; list-style: none; margin-top: 15px; margin-bottom: 20px; }
-        .tag-list li { background: rgba(0, 242, 255, 0.1); border: 1px solid rgba(0, 242, 255, 0.3); padding: 5px 15px; border-radius: 50px; font-size: 0.8rem; color: var(--cyan); }
-        
-        /* HIGHLIGHTED BLUE LINKS */
-        .highlight-blue-link {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 15px 20px;
-            background: rgba(0, 242, 255, 0.1);
-            border: 1px solid var(--cyan);
-            border-radius: 12px;
-            color: var(--cyan);
-            text-decoration: none;
-            font-weight: 700;
-            transition: 0.3s;
-            margin-bottom: 10px;
-        }
-        .highlight-blue-link:hover {
-            background: var(--cyan);
-            color: #000;
-            box-shadow: 0 0 20px var(--cyan);
-            transform: scale(1.02);
-        }
+    header { padding: 72px 0 30px; }
 
-        /* --- CONTACT --- */
-        .contact-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 15px; }
-        .c-card { background: var(--glass); padding: 30px; border-radius: 15px; border: 1px solid var(--border); text-decoration: none; color: white; text-align: center; transition: 0.3s; }
-        .c-card:hover { border-color: var(--cyan); transform: translateY(-5px); }
-        .c-card i { font-size: 1.8rem; color: var(--cyan); margin-bottom: 15px; display: block; }
+    .hero {
+      display: grid;
+      grid-template-columns: 190px 1fr;
+      gap: 30px;
+      align-items: center;
+      background: linear-gradient(140deg, rgba(87,181,255,0.14), rgba(143,114,255,0.12));
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 30px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.25);
+      animation: floatIn 800ms ease both;
+    }
 
-        footer { text-align: center; padding: 60px; color: #334155; border-top: 1px solid var(--border); }
+    @keyframes floatIn {
+      from { opacity: 0; transform: translateY(18px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
 
-        @media (max-width: 600px) { nav { flex-direction: column; gap: 10px; } }
-    </style>
+    .hero img {
+      width: 100%;
+      aspect-ratio: 1;
+      object-fit: cover;
+      border-radius: 18px;
+      border: 2px solid rgba(255,255,255,0.24);
+      box-shadow: 0 0 22px var(--glow);
+    }
+
+    .hero h1 { font-size: clamp(1.9rem, 4vw, 2.9rem); margin-bottom: 8px; }
+    .hero p { color: var(--muted); margin-bottom: 14px; }
+
+    .chips { display: flex; flex-wrap: wrap; gap: 10px; }
+
+    .chip {
+      background: rgba(87,181,255,0.16);
+      border: 1px solid rgba(87,181,255,0.45);
+      color: #d9ecff;
+      border-radius: 999px;
+      padding: 6px 12px;
+      font-size: 0.85rem;
+    }
+
+    main section { padding: 30px 0; }
+    h2 { margin-bottom: 16px; font-size: 1.5rem; }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 22px;
+      backdrop-filter: blur(2px);
+    }
+
+    .grid-2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
+
+    .list { margin-left: 20px; color: var(--muted); }
+    .list li { margin-bottom: 8px; }
+
+    .links { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 14px; }
+
+    .btn {
+      text-decoration: none;
+      color: var(--text);
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.05);
+      border-radius: 10px;
+      padding: 10px 14px;
+      font-size: 0.95rem;
+      transition: transform .2s ease, border-color .2s ease, color .2s ease, box-shadow .2s ease;
+    }
+
+    .btn:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 18px rgba(87,181,255,0.18);
+    }
+
+    .contact-highlight {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: 14px;
+    }
+
+    .contact-card {
+      display: block;
+      text-decoration: none;
+      color: var(--text);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 16px;
+      background: linear-gradient(145deg, rgba(87,181,255,0.14), rgba(143,114,255,0.12));
+      transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+    }
+
+    .contact-card:hover {
+      transform: translateY(-4px);
+      border-color: var(--accent);
+      box-shadow: 0 10px 20px rgba(87,181,255,0.22);
+    }
+
+    .contact-card strong { display: block; font-size: 1.05rem; margin-bottom: 4px; }
+    .contact-card span { color: var(--muted); font-size: 0.9rem; word-break: break-all; }
+
+    footer {
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.9rem;
+      padding: 25px 0 40px;
+    }
+
+    @media (max-width: 860px) {
+      .hero { grid-template-columns: 1fr; }
+      .hero img { width: 180px; }
+      .grid-2, .contact-highlight { grid-template-columns: 1fr; }
+      .nav-wrap { flex-direction: column; gap: 10px; }
+    }
+  </style>
 </head>
 <body>
+  <canvas id="particle-canvas"></canvas>
+  <div class="overlay"></div>
 
-    <canvas id="bgCanvas"></canvas>
+  <nav>
+    <div class="container nav-wrap">
+      <a class="logo" href="#home">Ramadass A</a>
+      <ul class="nav-links">
+        <li><a href="#about">About</a></li>
+        <li><a href="#skills">Skills</a></li>
+        <li><a href="#education">Education</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </div>
+  </nav>
 
-    <nav>
-        <a href="#contact" class="logo">RAMU</a>
-        <ul class="nav-links">
-            <li><a href="#home">Home</a></li>
-            <li><a href="#about">About</a></li>
-            <li><a href="#skills">Skills</a></li>
-            <li><a href="#education">Education</a></li>
-            <li><a href="#contact">Contact</a></li>
-        </ul>
-    </nav>
-
-    <section id="home" class="hero">
-        <div style="display: inline-block; text-align: center; width: 100%;">
-            <img id="hero-image" src="myimage_gemini.jpj" alt="My Photo">
+  <header id="home" class="container">
+    <div class="hero">
+      <img src="myimage_gemini.png" alt="Profile photo of Ramadass A" />
+      <div>
+        <h1>Hi, I'm Ramadass (Ramu)</h1>
+        <p>First-year B.Tech CSE (AI & ML) student at VISTAS, Chennai. Passionate about Python, backend development, and AI problem-solving.</p>
+        <div class="chips">
+          <span class="chip">Future AI Engineer</span>
+          <span class="chip">Python Learner</span>
+          <span class="chip">Backend Enthusiast</span>
+          <span class="chip">Logical Thinker</span>
         </div>
-        <p style="letter-spacing: 4px; color: #94a3b8; font-size: 0.9rem; text-transform: uppercase;">Mission: Development</p>
-        <h1 class="hero-name">RAMU</h1>
-        <p class="roles">Future AI Engineer / BackEnd Developer / Gamer / Front End</p>
-    </section>
+      </div>
+    </div>
+  </header>
 
+  <main class="container">
     <section id="about">
-        <h2>About Me</h2>
-        <div class="glass-card">
-            <p>I am a driven first-year CSE (AI & ML) student at <strong>VISTAS Chennai</strong> with a strong interest in coding and problem-solving. I enjoy working with Python and exploring concepts in artificial intelligence and machine learning. I have a deep interest in mathematics, physics, and logical thinking, and my goal is to become a highly skilled and confident software developer.</p>
-        </div>
+      <h2>About Me</h2>
+      <div class="card">
+        <p>I am a motivated engineering student with strong interest in coding, mathematics, and physics. I enjoy learning by building projects and solving practical problems. My goal is to become a confident and highly skilled software engineer in AI and ML.</p>
+      </div>
     </section>
 
     <section id="skills">
-        <h2>Learning Journey</h2>
-        <div class="skills-container">
-            
-            <div class="skill-card active" onclick="this.classList.toggle('active')">
-                <div class="skill-header">
-                    <h3>Python & Advanced Learning</h3>
-                    <i class="fab fa-python" style="color: var(--cyan); font-size: 1.5rem;"></i>
-                </div>
-                <div class="skill-content">
-                    <p style="font-weight: 600; color: #fff; margin-bottom: 10px;">Mastering Python through intensive logic building and automation.</p>
-                    
-                    <p style="color: #94a3b8; font-size: 0.85rem;">Courses Completed / Doing:</p>
-                    <ul class="tag-list">
-                        <li>CS50 (Harvard)</li>
-                        <li>Udemy Python Bootcamp</li>
-                        <li>100 Days of Code</li>
-                        <li>NumPy & Pandas</li>
-                    </ul>
-
-                    <p style="color: #94a3b8; font-size: 0.85rem; margin-bottom: 10px;">Work Portfolios:</p>
-                    <a href="https://github.com/codebyramu/mypython_code" target="_blank" class="highlight-blue-link">
-                        <i class="fab fa-github"></i> Personal Python Work (MyPython_Code)
-                    </a>
-                    <a href="https://github.com/me50/codebyramu" target="_blank" class="highlight-blue-link">
-                        <i class="fas fa-university"></i> CS50 Harvard Lab Submissions
-                    </a>
-                </div>
-            </div>
-
-            <div class="skill-card" onclick="this.classList.toggle('active')">
-                <div class="skill-header">
-                    <h3>Version Control (Git & GitHub)</h3>
-                    <i class="fas fa-code-branch" style="color: var(--pink); font-size: 1.5rem;"></i>
-                </div>
-                <div class="skill-content">
-                    <p>Building professional workflows with terminal commands and versioning.</p>
-                    <ul class="tag-list">
-                        <li>Git CLI Codes</li>
-                        <li>Writing Comments</li>
-                        <li>Branch Management</li>
-                        <li>Linking Local to GitHub</li>
-                    </ul>
-                </div>
-            </div>
-
-        </div>
+      <h2>Skills & Learning</h2>
+      <div class="grid-2">
+        <article class="card">
+          <h3>Core Focus</h3>
+          <ul class="list">
+            <li>Python programming and logic-building</li>
+            <li>Git & GitHub workflow</li>
+            <li>Problem-solving fundamentals</li>
+            <li>Learning AI/ML foundations</li>
+          </ul>
+        </article>
+        <article class="card">
+          <h3>Courses / Progress</h3>
+          <ul class="list">
+            <li>CS50 (Harvard)</li>
+            <li>Udemy Python Bootcamp</li>
+            <li>100 Days of Code</li>
+            <li>NumPy & Pandas basics</li>
+          </ul>
+        </article>
+      </div>
+      <div class="links">
+        <a class="btn" target="_blank" href="https://github.com/codebyramu/mypython_code">Python Portfolio Repo</a>
+        <a class="btn" target="_blank" href="https://github.com/me50/codebyramu">CS50 Submission Repo</a>
+      </div>
     </section>
 
     <section id="education">
-        <h2>Education</h2>
-        <div class="glass-card edu-box">
-            <p style="color: var(--cyan); font-weight: 800; font-size: 1.2rem;">Aug 2024 – Present</p>
-            <h3 style="font-size: 1.5rem; margin: 10px 0;">B.Tech CSE – Artificial Intelligence & Machine Learning</h3>
-            <p>VISTAS (Vels Institute of Science, Technology & Advanced Studies), Chennai</p>
-            <p style="margin-top: 10px; color: #94a3b8;">Focusing on foundational engineering, advanced mathematics, and AI logic building.</p>
-        </div>
+      <h2>Education</h2>
+      <div class="card">
+        <p><strong>B.Tech - CSE (AI & ML)</strong></p>
+        <p>Vels Institute of Science, Technology & Advanced Studies (VISTAS), Chennai</p>
+        <p>Aug 2024 - Present</p>
+      </div>
     </section>
 
     <section id="contact">
-        <h2>Get In Touch</h2>
-        <div class="contact-grid">
-            <a href="mailto:ramadass17810@gmail.com" class="c-card"><i class="fas fa-envelope"></i>Email</a>
-            <a href="tel:+917382781961" class="c-card"><i class="fas fa-phone"></i>Call</a>
-            <a href="https://github.com/codebyramu" target="_blank" class="c-card"><i class="fab fa-github"></i>Github</a>
-            <a href="https://www.linkedin.com/in/ramadass-a-1791103a1" target="_blank" class="c-card"><i class="fab fa-linkedin"></i>LinkedIn</a>
-        </div>
+      <h2>Connect With Me</h2>
+      <div class="contact-highlight">
+        <a class="contact-card" href="mailto:ramadass17810@gmail.com" data-link="mailto:ramadass17810@gmail.com">
+          <strong>Email</strong>
+          <span>ramadass17810@gmail.com</span>
+        </a>
+        <a class="contact-card" href="https://github.com/codebyramu" target="_blank" rel="noopener noreferrer" data-link="https://github.com/codebyramu">
+          <strong>GitHub</strong>
+          <span>github.com/codebyramu</span>
+        </a>
+        <a class="contact-card" href="https://www.linkedin.com/in/ramadass-a-1791103a1" target="_blank" rel="noopener noreferrer" data-link="https://www.linkedin.com/in/ramadass-a-1791103a1">
+          <strong>LinkedIn</strong>
+          <span>linkedin.com/in/ramadass-a-1791103a1</span>
+        </a>
+      </div>
+      <div class="links">
+        <a class="btn" href="tel:+917382781961">Phone</a>
+      </div>
     </section>
+  </main>
 
-    <footer>© 2025 Ramu • Future AI Engineer</footer>
+  <footer>© 2026 Ramadass A • Interactive Portfolio</footer>
 
-    <script>
-        const canvas = document.getElementById('bgCanvas');
-        const ctx = canvas.getContext('2d');
-        let particles = [];
-        const mouse = { x: null, y: null, radius: 150 };
-        const connectionRadius = 100;
-        const colors = ['#00f2ff', '#ff007f', '#39ff14', '#ffffff', '#ff3131'];
+  <script>
+    const canvas = document.getElementById('particle-canvas');
+    const ctx = canvas.getContext('2d');
 
-        window.addEventListener('mousemove', (e) => { mouse.x = e.x; mouse.y = e.y; });
+    const pointer = { x: null, y: null, radius: 140 };
+    const particles = [];
+    const maxParticles = 140;
 
-        class Particle {
-            constructor() {
-                this.x = Math.random() * canvas.width;
-                this.y = Math.random() * canvas.height;
-                this.vx = (Math.random() - 0.5) * 1.2;
-                this.vy = (Math.random() - 0.5) * 1.2;
-                this.size = Math.random() * 1.5 + 1;
-                this.color = colors[Math.floor(Math.random() * colors.length)];
-            }
-            draw() { ctx.fillStyle = this.color; ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill(); }
-            update() { 
-                this.x += this.vx; this.y += this.vy; 
-                if (this.x < 0 || this.x > canvas.width) this.vx *= -1; 
-                if (this.y < 0 || this.y > canvas.height) this.vy *= -1; 
-            }
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+
+    class Particle {
+      constructor() {
+        this.x = Math.random() * canvas.width;
+        this.y = Math.random() * canvas.height;
+        this.vx = (Math.random() - 0.5) * 1.15;
+        this.vy = (Math.random() - 0.5) * 1.15;
+        this.size = Math.random() * 2 + 0.8;
+        this.hue = Math.random() > 0.5 ? 205 : 258;
+      }
+
+      move() {
+        this.x += this.vx;
+        this.y += this.vy;
+
+        if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
+        if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
+
+        if (pointer.x !== null && pointer.y !== null) {
+          const dx = pointer.x - this.x;
+          const dy = pointer.y - this.y;
+          const distance = Math.hypot(dx, dy);
+
+          if (distance < pointer.radius) {
+            const push = (pointer.radius - distance) / pointer.radius;
+            this.x -= (dx / distance) * push * 2.2;
+            this.y -= (dy / distance) * push * 2.2;
+          }
+        }
+      }
+
+      draw() {
+        ctx.beginPath();
+        ctx.fillStyle = `hsla(${this.hue}, 100%, 70%, 0.9)`;
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
+
+    function connectParticles() {
+      for (let i = 0; i < particles.length; i++) {
+        for (let j = i + 1; j < particles.length; j++) {
+          const dx = particles[i].x - particles[j].x;
+          const dy = particles[i].y - particles[j].y;
+          const dist = Math.hypot(dx, dy);
+          const maxDist = 110;
+
+          if (dist < maxDist) {
+            const opacity = 1 - dist / maxDist;
+            ctx.beginPath();
+            ctx.strokeStyle = `rgba(130, 190, 255, ${opacity * 0.25})`;
+            ctx.lineWidth = 1;
+            ctx.moveTo(particles[i].x, particles[i].y);
+            ctx.lineTo(particles[j].x, particles[j].y);
+            ctx.stroke();
+          }
         }
 
-        function init() {
-            canvas.width = window.innerWidth; canvas.height = window.innerHeight;
-            particles = [];
-            for (let i = 0; i < (canvas.width * canvas.height) / 11000; i++) particles.push(new Particle());
+        if (pointer.x !== null && pointer.y !== null) {
+          const dx = particles[i].x - pointer.x;
+          const dy = particles[i].y - pointer.y;
+          const dist = Math.hypot(dx, dy);
+
+          if (dist < pointer.radius) {
+            const op = 1 - dist / pointer.radius;
+            ctx.beginPath();
+            ctx.strokeStyle = `rgba(143,114,255, ${op * 0.45})`;
+            ctx.lineWidth = 1.2;
+            ctx.moveTo(particles[i].x, particles[i].y);
+            ctx.lineTo(pointer.x, pointer.y);
+            ctx.stroke();
+          }
+        }
+      }
+    }
+
+    function createParticles() {
+      particles.length = 0;
+      const target = Math.min(maxParticles, Math.floor((canvas.width * canvas.height) / 9000));
+      for (let i = 0; i < target; i++) particles.push(new Particle());
+    }
+
+    function animate() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      for (const particle of particles) {
+        particle.move();
+        particle.draw();
+      }
+
+      connectParticles();
+      requestAnimationFrame(animate);
+    }
+
+    window.addEventListener('mousemove', (event) => {
+      pointer.x = event.clientX;
+      pointer.y = event.clientY;
+    });
+
+    window.addEventListener('touchmove', (event) => {
+      if (!event.touches.length) return;
+      pointer.x = event.touches[0].clientX;
+      pointer.y = event.touches[0].clientY;
+    }, { passive: true });
+
+    window.addEventListener('touchend', () => {
+      pointer.x = null;
+      pointer.y = null;
+    });
+
+    window.addEventListener('mouseleave', () => {
+      pointer.x = null;
+      pointer.y = null;
+    });
+
+    window.addEventListener('resize', () => {
+      resizeCanvas();
+      createParticles();
+    });
+
+    resizeCanvas();
+    createParticles();
+    animate();
+
+    document.querySelectorAll('.contact-card').forEach((card) => {
+      card.addEventListener('click', (event) => {
+        event.preventDefault();
+        const link = card.dataset.link;
+
+        if (!link) return;
+
+        if (link.startsWith('mailto:')) {
+          window.location.href = link;
+          return;
         }
 
-        function connect() {
-            for (let a = 0; a < particles.length; a++) {
-                for (let b = a; b < particles.length; b++) {
-                    let dx = particles[a].x - particles[b].x;
-                    let dy = particles[a].y - particles[b].y;
-                    let distance = Math.sqrt(dx * dx + dy * dy);
-                    if (distance < connectionRadius) {
-                        ctx.strokeStyle = particles[a].color;
-                        ctx.globalAlpha = 1 - (distance / connectionRadius);
-                        ctx.lineWidth = 0.5;
-                        ctx.beginPath(); ctx.moveTo(particles[a].x, particles[a].y); ctx.lineTo(particles[b].x, particles[b].y); ctx.stroke();
-                    }
-                }
-                let dxM = mouse.x - particles[a].x; let dyM = mouse.y - particles[a].y;
-                let distM = Math.sqrt(dxM*dxM + dyM*dyM);
-                if (distM < mouse.radius) {
-                    ctx.strokeStyle = particles[a].color;
-                    ctx.globalAlpha = 1 - (distM / mouse.radius);
-                    ctx.lineWidth = 1.5;
-                    ctx.beginPath(); ctx.moveTo(particles[a].x, particles[a].y); ctx.lineTo(mouse.x, mouse.y); ctx.stroke();
-                }
-            }
-            ctx.globalAlpha = 1;
-        }
-
-        function animate() { ctx.clearRect(0, 0, canvas.width, canvas.height); particles.forEach(p => { p.update(); p.draw(); }); connect(); requestAnimationFrame(animate); }
-        window.addEventListener('resize', init);
-        init(); animate();
-
-        const heroImage = document.getElementById('hero-image');
-        heroImage.style.transform = 'scale(0.8)';
-        heroImage.style.opacity = '0';
-        heroImage.style.transition = 'transform 1s ease, opacity 1s ease';
-        window.addEventListener('load', () => { heroImage.style.transform = 'scale(1)'; heroImage.style.opacity = '1'; });
-        window.addEventListener('scroll', () => {
-            const scrollY = window.scrollY;
-            heroImage.style.transform = `translateX(${-scrollY * 3}px) scale(1)`; 
-            heroImage.style.opacity = `${Math.max(1 - scrollY / 300, 0)}`; 
-        });
-    </script>
+        window.open(link, '_blank', 'noopener,noreferrer');
+      });
+    });
+  </script>
 </body>
-
 </html>
